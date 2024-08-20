@@ -2,3 +2,6 @@
 get_prop(system_server, vendor_persist_camera_prop)
 
 get_prop(system_server, vendor_wfd_sys_debug_prop)
+
+# Freeform
+add_service(system_server, lmo_freeform_service);
