@@ -81,6 +81,7 @@ as anyway perflock calls of these resources would fail. -->
         <Config MajorValue="0x6" MinorValue="0x11" Supported="no" />
         <Config MajorValue="0x6" MinorValue="0x12" Supported="no" />
         <Config MajorValue="0xA" MinorValue="0xA" Node="/sys/class/kgsl/kgsl-3d0/devfreq/mod_percent" />
+        <Config MajorValue="0xB" MinorValue="0xC" Supported="no" />
         <Config MajorValue="0xB" MinorValue="0x10" Supported="no" />
         <Config MajorValue="0xC" MinorValue="0x4" Supported="no" />
         <Config MajorValue="0xC" MinorValue="0x5" Supported="no" />
@@ -93,10 +94,29 @@ as anyway perflock calls of these resources would fail. -->
         <Config MajorValue="0xC" MinorValue="0xC" Supported="no" />
         <Config MajorValue="0xC" MinorValue="0xD" Supported="no" />
         <Config MajorValue="0xC" MinorValue="0xE" Supported="no" />
+        <Config MajorValue="0xC" MinorValue="0xF" Supported="no" />
+        <Config MajorValue="0xC" MinorValue="0x10" Supported="no" />
+        <Config MajorValue="0xC" MinorValue="0x11" Supported="no" />
+        <Config MajorValue="0xC" MinorValue="0x12" Supported="no" />
+        <Config MajorValue="0xD" MinorValue="0x16" Supported="no" />
+        <Config MajorValue="0xD" MinorValue="0x17" Supported="no" />
+        <Config MajorValue="0xD" MinorValue="0x18" Supported="no" />
+        <Config MajorValue="0xD" MinorValue="0x19" Supported="no" />
+        <Config MajorValue="0xD" MinorValue="0x1A" Supported="no" />
+        <Config MajorValue="0xD" MinorValue="0x1B" Supported="no" />
+        <Config MajorValue="0xD" MinorValue="0x1C" Supported="no" />
+        <Config MajorValue="0xD" MinorValue="0x1D" Supported="no" />
+        <Config MajorValue="0xD" MinorValue="0x1E" Supported="no" />
+        <Config MajorValue="0xD" MinorValue="0x1F" Supported="no" />
+        <Config MajorValue="0xD" MinorValue="0x20" Supported="no" />
+        <Config MajorValue="0xD" MinorValue="0x21" Supported="no" />
+        <Config MajorValue="0xD" MinorValue="0x22" Supported="no" />
+        <Config MajorValue="0xD" MinorValue="0x23" Supported="no" />
+        <Config MajorValue="0xD" MinorValue="0x24" Supported="no" />
+        <Config MajorValue="0xD" MinorValue="0x25" Supported="no" />
         <Config MajorValue="0xD" MinorValue="0x26" Supported="no" />
         <Config MajorValue="0xD" MinorValue="0x27" Supported="no" />
         <Config MajorValue="0xD" MinorValue="0x28" Supported="no" />
-        <Config MajorValue="0xD" MinorValue="0x29" Supported="no" />
         <Config MajorValue="0xD" MinorValue="0x29" Supported="no" />
         <Config MajorValue="0xF" MinorValue="0x0" Supported="no" />
         <Config MajorValue="0xF" MinorValue="0x0" Supported="no" />
@@ -165,10 +185,6 @@ as anyway perflock calls of these resources would fail. -->
         <Config MajorValue="0x5" MinorValue="0x11" Supported="no" />
         <Config MajorValue="0x5" MinorValue="0x12" Supported="no" />
         <Config MajorValue="0x5" MinorValue="0x13" Supported="no" />
-        <Config MajorValue="0x5" MinorValue="0x14" Supported="no" />
-        <Config MajorValue="0x5" MinorValue="0x15" Supported="no" />
-        <Config MajorValue="0x5" MinorValue="0x16" Supported="no" />
-        <Config MajorValue="0xB" MinorValue="0xC" Supported="no" />
         <Config MajorValue="0xB" MinorValue="0x10" Supported="no" />
 
     </PerfResources>
