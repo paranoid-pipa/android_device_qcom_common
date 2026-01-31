@@ -11,7 +11,6 @@ TARGET_COMMON_QTI_COMPONENTS := \
     av \
     bt \
     display \
-    gps \
     init \
     media \
     nfc \
