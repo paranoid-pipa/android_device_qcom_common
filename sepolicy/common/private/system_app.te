@@ -1,1 +1,4 @@
 allow system_app sysfs_thermal:file { getattr open read setattr unlink };
+
+# /proc/stat
+allow system_app proc_stat:file { read open getattr };
