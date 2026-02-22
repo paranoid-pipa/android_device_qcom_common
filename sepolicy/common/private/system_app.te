@@ -1,0 +1,1 @@
+allow system_app sysfs_thermal:file { getattr open read setattr unlink };
