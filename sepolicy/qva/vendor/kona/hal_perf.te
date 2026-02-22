@@ -1,0 +1,1 @@
+allow vendor_hal_perf_default surfaceflinger:file { getattr open read setattr unlink };
