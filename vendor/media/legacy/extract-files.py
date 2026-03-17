@@ -16,8 +16,8 @@ from extract_utils.main import ExtractUtils
 from extract_utils_qti.module import ExtractUtilsQTIModule, QTIComponentType
 
 namespace_imports = [
-    'hardware/qcom/display',
     'vendor/qcom/common/vendor/dsprpcd',
+    'vendor/qcom/opensource/display',
 ]
 
 blob_fixups: blob_fixups_user_type = {

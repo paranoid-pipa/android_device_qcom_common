@@ -11,6 +11,8 @@ from extract_utils_qti.module import ExtractUtilsQTIModule, QTIComponentType
 
 namespace_imports = [
     'vendor/qcom/common/system/av',
+    'vendor/qcom/opensource/commonsys/display',
+    'vendor/qcom/opensource/commonsys-intf/display',
 ]
 
 module = ExtractUtilsQTIModule(
