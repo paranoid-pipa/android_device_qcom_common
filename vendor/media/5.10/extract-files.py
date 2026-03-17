@@ -16,9 +16,9 @@ from extract_utils.main import ExtractUtils
 from extract_utils_qti.module import ExtractUtilsQTIModule, QTIComponentType
 
 namespace_imports = [
-    'hardware/qcom/display',
-    'hardware/qcom/display/gralloc',
+    'hardware/qcom-caf/sm8450',
     'vendor/qcom/common/vendor/media/5.10',
+    'vendor/qcom/opensource/display',
 ]
 
 blob_fixups: blob_fixups_user_type = {

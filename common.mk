@@ -127,26 +127,106 @@ endif
 
 ifeq ($(call is-board-platform-in-list,$(6_6_FAMILY)),true)
 TARGET_KERNEL_VERSION ?= 6.6
+QCOM_HARDWARE_VARIANT := sm8750
 else ifeq ($(call is-board-platform-in-list,$(6_1_FAMILY)),true)
 TARGET_KERNEL_VERSION ?= 6.1
+QCOM_HARDWARE_VARIANT := sm8650
 else ifeq ($(call is-board-platform-in-list,$(5_15_FAMILY)),true)
 TARGET_KERNEL_VERSION ?= 5.15
+QCOM_HARDWARE_VARIANT := sm8550
 else ifeq ($(call is-board-platform-in-list,$(5_10_FAMILY)),true)
 TARGET_KERNEL_VERSION ?= 5.10
+QCOM_HARDWARE_VARIANT := sm8450
 else ifeq ($(call is-board-platform-in-list,$(5_4_FAMILY)),true)
 TARGET_KERNEL_VERSION ?= 5.4
+QCOM_HARDWARE_VARIANT := sm8350
 else ifeq ($(call is-board-platform-in-list,$(4_19_FAMILY)),true)
 TARGET_KERNEL_VERSION ?= 4.19
+QCOM_HARDWARE_VARIANT := sm8250
 else ifeq ($(call is-board-platform-in-list,$(4_14_FAMILY)),true)
 TARGET_KERNEL_VERSION ?= 4.14
+QCOM_HARDWARE_VARIANT := sm8150
 else ifeq ($(call is-board-platform-in-list,$(4_9_FAMILY)),true)
 TARGET_KERNEL_VERSION ?= 4.9
+QCOM_HARDWARE_VARIANT := sdm845
 else ifeq ($(call is-board-platform-in-list,$(4_4_FAMILY)),true)
 TARGET_KERNEL_VERSION ?= 4.4
+QCOM_HARDWARE_VARIANT := sdm660
 else ifeq ($(call is-board-platform-in-list,$(3_18_FAMILY)),true)
 TARGET_KERNEL_VERSION ?= 3.18
+QCOM_HARDWARE_VARIANT := msm8996
+else
+QCOM_HARDWARE_VARIANT := $(TARGET_BOARD_PLATFORM)
 endif
 
+# Pass board platform to kernel build
+TARGET_KERNEL_ADDITIONAL_FLAGS += TARGET_BOARD_PLATFORM=$(TARGET_BOARD_PLATFORM)
+
+# Allow a device to opt-out hardset of PRODUCT_SOONG_NAMESPACES
+QCOM_SOONG_NAMESPACE ?= hardware/qcom-caf/$(QCOM_HARDWARE_VARIANT)
+PRODUCT_SOONG_NAMESPACES += $(QCOM_SOONG_NAMESPACE)
+
+# Add bootctrl to PRODUCT_SOONG_NAMESPACES
+PRODUCT_SOONG_NAMESPACES += hardware/qcom/bootctrl
+
+# Add display-commonsys to PRODUCT_SOONG_NAMESPACES
+ifeq ($(call is-board-platform-in-list, $(4_9_FAMILY) $(4_14_FAMILY) $(4_19_FAMILY) $(5_4_FAMILY) $(5_10_FAMILY) $(5_15_FAMILY) $(6_1_FAMILY) $(6_6_FAMILY)),true)
+    PRODUCT_SOONG_NAMESPACES += \
+        vendor/qcom/opensource/commonsys/display \
+        vendor/qcom/opensource/commonsys-intf/display
+
+    ifneq ($(call is-board-platform-in-list, $(5_10_FAMILY) $(5_15_FAMILY) $(6_1_FAMILY) $(6_6_FAMILY)),true)
+        PRODUCT_SOONG_NAMESPACES += \
+            vendor/qcom/opensource/display
+    endif
+    $(call soong_config_set,qtidisplay,headers_namespace,vendor/qcom/opensource/commonsys-intf/display)
+else
+    $(call soong_config_set,qtidisplay,headers_namespace,$(QCOM_SOONG_NAMESPACE)/display)
+endif
+
+# Add data-ipa-cfg-mgr to PRODUCT_SOONG_NAMESPACES if needed
+ifneq ($(USE_DEVICE_SPECIFIC_DATA_IPA_CFG_MGR),true)
+    ifeq ($(call is-board-platform-in-list, $(3_18_FAMILY) $(4_4_FAMILY) $(4_9_FAMILY) $(4_14_FAMILY) $(4_19_FAMILY) $(5_4_FAMILY)),true)
+        PRODUCT_SOONG_NAMESPACES += vendor/qcom/opensource/data-ipa-cfg-mgr-legacy-um
+    else ifeq ($(call is-board-platform-in-list, $(5_10_FAMILY)),true)
+        PRODUCT_SOONG_NAMESPACES += hardware/qcom-caf/sm8450/data-ipa-cfg-mgr
+    else ifeq ($(call is-board-platform-in-list, $(5_15_FAMILY)),true)
+        PRODUCT_SOONG_NAMESPACES += hardware/qcom-caf/sm8550/data-ipa-cfg-mgr
+    else ifeq ($(call is-board-platform-in-list, $(6_1_FAMILY)),true)
+        PRODUCT_SOONG_NAMESPACES += hardware/qcom-caf/sm8650/data-ipa-cfg-mgr
+    else ifeq ($(call is-board-platform-in-list, $(6_6_FAMILY)),true)
+        PRODUCT_SOONG_NAMESPACES += hardware/qcom-caf/sm8750/data-ipa-cfg-mgr
+    endif
+endif
+
+# Add dataservices to PRODUCT_SOONG_NAMESPACES if needed
+ifneq ($(USE_DEVICE_SPECIFIC_DATASERVICES),true)
+    PRODUCT_SOONG_NAMESPACES += vendor/qcom/opensource/dataservices
+endif
+
+# Add sound trigger HAL to PRODUCT_SOONG_NAMESPACES if needed
+ifeq ($(BOARD_SUPPORTS_OPENSOURCE_STHAL),true)
+    ifeq ($(call is-board-platform-in-list, $(3_18_FAMILY) $(4_4_FAMILY) $(4_9_FAMILY) $(4_14_FAMILY) $(4_19_FAMILY) $(5_4_FAMILY)),true)
+        PRODUCT_SOONG_NAMESPACES += vendor/qcom/opensource/audio-hal/st-hal
+    else ifeq ($(call is-board-platform-in-list, $(5_10_FAMILY) $(5_15_FAMILY) $(6_1_FAMILY)),true)
+        PRODUCT_SOONG_NAMESPACES += vendor/qcom/opensource/audio-hal/st-hal-ar-legacy
+        $(call soong_config_set,qtiaudio,legacy_headers_namespace,$(QCOM_SOONG_NAMESPACE))
+        $(call soong_config_set,qtiaudio,legacy_libarpal_namespace,$(QCOM_SOONG_NAMESPACE))
+    else
+        PRODUCT_SOONG_NAMESPACES += vendor/qcom/opensource/audio-hal/st-hal-ar
+        $(call soong_config_set,qtiaudio,headers_namespace,$(QCOM_SOONG_NAMESPACE))
+        $(call soong_config_set,qtiaudio,libarpal_namespace,$(QCOM_SOONG_NAMESPACE))
+    endif
+endif
+
+# Add thermal HAL to PRODUCT_SOONG_NAMESPACES
+ifeq ($(call is-board-platform-in-list, $(3_18_FAMILY) $(4_4_FAMILY) $(4_9_FAMILY) $(4_14_FAMILY) $(4_19_FAMILY) $(5_4_FAMILY)),true)
+    PRODUCT_SOONG_NAMESPACES += hardware/qcom-caf/thermal-legacy-um
+else
+    PRODUCT_SOONG_NAMESPACES += hardware/qcom-caf/thermal
+endif
+
+# Disable thermal HAL netlink framework on platforms that do not support it
 ifneq (,$(filter 3.18 4.4 4.9 4.14 4.19 5.4, $(TARGET_KERNEL_VERSION)))
 $(call soong_config_set,qti_thermal,netlink,false)
 endif
@@ -369,5 +449,10 @@ SOONG_CONFIG_rfs += \
 
 # Set default values for rfs config
 SOONG_CONFIG_rfs_mpss_firmware_symlink_target ?= firmware_mnt
+
+# Add wlan to PRODUCT_SOONG_NAMESPACES
+PRODUCT_SOONG_NAMESPACES += \
+    hardware/qcom/wlan \
+    hardware/qcom/wlan/qcwcn
 
 endif # QCOM_BOARD_PLATFORMS
