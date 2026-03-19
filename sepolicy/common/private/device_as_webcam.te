@@ -1,1 +1,0 @@
-get_prop(device_as_webcam, usb_uvc_config_prop)

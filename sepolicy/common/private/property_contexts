@@ -1,2 +1,0 @@
-# USB
-ro.usb.uvc.disable_video_encode_flag   u:object_r:usb_uvc_config_prop:s0
